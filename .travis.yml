@@ -56,7 +56,9 @@ x-template:
   install: travis_wait mvn clean install --projects janusgraph-${MODULE} --also-make -DskipTests=true 
     -Dmaven.javadoc.skip=true --batch-mode --show-version ${INSTALL_ARGS};
   script: travis_wait 50 mvn verify --projects janusgraph-${MODULE} -Pcoverage ${ARGS};
-  after_success: bash <(curl -s https://codecov.io/bash);
+  after_success: 
+    - cat /home/travis/stream_method_stacktrace.txt
+    - bash <(curl -s https://codecov.io/bash)
   if: commit_message !~ /\[doc only\]/
 
 jobs:
