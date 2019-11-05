@@ -47,7 +47,9 @@ x-template:
   stage: test
   install: travis_wait mvn clean install --projects janusgraph-${MODULE} --also-make -DskipTests=true
     -Dmaven.javadoc.skip=true --batch-mode --show-version ${INSTALL_ARGS};
-  script: travis_wait 50 mvn verify --projects janusgraph-${MODULE} ${ARGS};
+  script: 
+    - travis_wait 50 mvn verify --projects janusgraph-${MODULE} ${ARGS}
+    - bash printStackTrace.sh
   if: type = cron OR commit_message =~ /\[full build\]/
 
 x-template:
@@ -55,7 +57,9 @@ x-template:
   stage: test
   install: travis_wait mvn clean install --projects janusgraph-${MODULE} --also-make -DskipTests=true 
     -Dmaven.javadoc.skip=true --batch-mode --show-version ${INSTALL_ARGS};
-  script: travis_wait 50 mvn verify --projects janusgraph-${MODULE} -Pcoverage ${ARGS};
+  script: 
+    - travis_wait 50 mvn verify --projects janusgraph-${MODULE} -Pcoverage ${ARGS}
+    - bash printStackTrace.sh
   after_success: bash <(curl -s https://codecov.io/bash);
   if: commit_message !~ /\[doc only\]/
 

@@ -17,6 +17,10 @@
 
 package org.janusgraph.graphdb.util;
 
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -68,6 +72,22 @@ public class SubqueryIterator implements Iterator<JanusGraphElement>, AutoClosea
                 throw new JanusGraphException("Could not call index", e.getCause());
             }
         }
+// ******* for print stack trace ******
+try {
+	FileWriter fw = new FileWriter("/home/travis/stream_method_stacktrace.txt", true);
+	PrintWriter pw = new PrintWriter(new BufferedWriter(fw));
+	final StackTraceElement[] stackTrace = new RuntimeException().getStackTrace();
+	for (final StackTraceElement stackTraceElement : stackTrace) {
+		System.out.println(stackTraceElement.toString());
+		pw.println(stackTraceElement.toString());
+	}
+	pw.println();
+	pw.close();
+}
+catch (IOException ex) {
+	ex.printStackTrace();
+}
+// ************************************
         elementIterator = stream.filter(e -> otherResults == null || otherResults.contains(e)).limit(limit).map(function).map(r -> (JanusGraphElement) r).iterator();
     }
 

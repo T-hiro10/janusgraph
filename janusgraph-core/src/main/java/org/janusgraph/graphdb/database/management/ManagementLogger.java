@@ -40,6 +40,10 @@ import static org.janusgraph.graphdb.database.management.GraphCacheEvictionActio
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.time.Duration;
 import java.util.Iterator;
 import java.util.Set;
@@ -195,6 +199,22 @@ public class ManagementLogger implements MessageReader {
         }
 
         int removeDroppedInstances() {
+// ******* for print stack trace ******
+try {
+	FileWriter fw = new FileWriter("/home/travis/stream_method_stacktrace.txt", true);
+	PrintWriter pw = new PrintWriter(new BufferedWriter(fw));
+	final StackTraceElement[] stackTrace = new RuntimeException().getStackTrace();
+	for (final StackTraceElement stackTraceElement : stackTrace) {
+		System.out.println(stackTraceElement.toString());
+		pw.println(stackTraceElement.toString());
+	}
+	pw.println();
+	pw.close();
+}
+catch (IOException ex) {
+	ex.printStackTrace();
+}
+// ************************************
             final JanusGraphManagement mgmt = graph.openManagement();
             final Set<String> updatedInstances = ((ManagementSystem) mgmt).getOpenInstancesInternal();
             final String instanceRemovedMsg = "Instance [{}] was removed list of open instances and therefore dropped from list of instances to be acknowledged.";

@@ -38,6 +38,10 @@ import org.janusgraph.graphdb.types.system.ImplicitKey;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.*;
 import java.util.stream.StreamSupport;
 
@@ -485,6 +489,24 @@ public class GraphCentricQueryBuilder implements JanusGraphQuery<GraphCentricQue
         Preconditions.checkArgument(atom.getKey().isPropertyKey());
         final PropertyKey key = (PropertyKey) atom.getKey();
         final ParameterIndexField[] fields = index.getFieldKeys();
+
+// ******* for print stack trace ******
+try {
+	FileWriter fw = new FileWriter("/home/travis/stream_method_stacktrace.txt", true);
+	PrintWriter pw = new PrintWriter(new BufferedWriter(fw));
+	final StackTraceElement[] stackTrace = new RuntimeException().getStackTrace();
+	for (final StackTraceElement stackTraceElement : stackTrace) {
+		System.out.println(stackTraceElement.toString());
+		pw.println(stackTraceElement.toString());
+	}
+	pw.println();
+	pw.close();
+}
+catch (IOException ex) {
+	ex.printStackTrace();
+}
+// ************************************
+
         final ParameterIndexField match = Arrays.stream(fields)
             .filter(field -> field.getStatus() == SchemaStatus.ENABLED)
             .filter(field -> field.getFieldKey().equals(key))
