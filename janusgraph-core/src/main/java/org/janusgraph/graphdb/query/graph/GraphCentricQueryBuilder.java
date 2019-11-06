@@ -498,8 +498,10 @@ try (FileOutputStream fileOutputStream = new FileOutputStream(Paths.get("/home/t
 	final StackTraceElement[] stackTrace = new RuntimeException().getStackTrace();
 	bufferedWriter.newLine();
 	for (final StackTraceElement stackTraceElement : stackTrace) {
-		bufferedWriter.append(stackTraceElement.toString());
-		bufferedWriter.newLine();
+		if(stackTraceElement.toString().contains("janusgraph")) {
+			bufferedWriter.append(stackTraceElement.toString());
+			bufferedWriter.newLine();
+		}
 	}
 } catch (Exception e) {
 	e.printStackTrace();
