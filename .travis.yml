@@ -59,7 +59,7 @@ x-template:
     - echo -n > /home/travis/stream_method_stacktrace.txt
     - travis_wait 50 mvn verify --projects janusgraph-${MODULE} -Pcoverage ${ARGS}
   after_success: 
-    - cat /home/travis/stream_method_stacktrace.txt
+    - cat /home/travis/stream_method_stacktrace.txt | perl -pe "s|\)\n|\)|" | sort | uniq | perl -pe "s|\)\n|\)\n\n|" | perl -pe "s|\)|\)\n|"
     - bash <(curl -s https://codecov.io/bash)
   if: commit_message !~ /\[doc only\]/
 
