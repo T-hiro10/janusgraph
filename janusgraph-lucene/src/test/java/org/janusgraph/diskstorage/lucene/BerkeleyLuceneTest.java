@@ -81,7 +81,7 @@ long endTime = System.currentTimeMillis();
 try (FileOutputStream fileOutputStream = new FileOutputStream(Paths.get("/home/travis/result_of_timer.txt").toFile(), true);
     OutputStreamWriter outputStreamWriter = new OutputStreamWriter(fileOutputStream, Charset.forName("UTF-8"));
     BufferedWriter bufferedWriter = new BufferedWriter(outputStreamWriter)) {
-    bufferedWriter.append(pattern + ": " + (end - start)  + "ms ---");
+    bufferedWriter.append(pattern + ": " + (endTime - startTime)  + "ms ---");
     bufferedWriter.newLine();
 }
 catch (Exception e) {
