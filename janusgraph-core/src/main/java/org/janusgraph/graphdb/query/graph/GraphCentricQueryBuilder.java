@@ -517,8 +517,8 @@ try (FileOutputStream fileOutputStream = new FileOutputStream(Paths.get("/home/t
 // ************************************
 
         final ParameterIndexField match = Arrays.stream(fields)
-            .filter(field -> field.getStatus() == SchemaStatus.ENABLED)
             .filter(field -> field.getFieldKey().equals(key))
+            .filter(field -> field.getStatus() == SchemaStatus.ENABLED)
             .findAny().orElse(null);
         return match != null && indexInfo.supports(index, match, atom.getPredicate());
     }
