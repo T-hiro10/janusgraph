@@ -22,6 +22,12 @@ import org.janusgraph.graphdb.JanusGraphIndexTest;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.junit.jupiter.api.Test;
 
+import java.io.BufferedWriter;
+import java.io.FileOutputStream;
+import java.io.OutputStreamWriter;
+import java.nio.charset.Charset;
+import java.nio.file.Paths;
+
 import static org.janusgraph.graphdb.configuration.GraphDatabaseConfiguration.INDEX_BACKEND;
 import static org.janusgraph.graphdb.configuration.GraphDatabaseConfiguration.INDEX_DIRECTORY;
 import static org.janusgraph.BerkeleyStorageSetup.getBerkeleyJEConfiguration;
@@ -67,7 +73,21 @@ public class BerkeleyLuceneTest extends JanusGraphIndexTest {
 
     @Test
     public void testPrintSchemaElements() {
+// ********************* for timer *************************
+long startTime = System.currentTimeMillis();
+String pattern = "limit-map"
         GraphOfTheGodsFactory.load(graph);
+long endTime = System.currentTimeMillis();
+try (FileOutputStream fileOutputStream = new FileOutputStream(Paths.get("/home/travis/result_of_timer.txt").toFile(), true);
+    OutputStreamWriter outputStreamWriter = new OutputStreamWriter(fileOutputStream, Charset.forName("UTF-8"));
+    BufferedWriter bufferedWriter = new BufferedWriter(outputStreamWriter)) {
+    bufferedWriter.append(pattern + ": " + (end - start)  + "ms ---");
+    bufferedWriter.newLine();
+}
+catch (Exception e) {
+    e.printStackTrace();
+}
+// *********************************************************
         mgmt = graph.openManagement();
 
         String expected = "A18422278042949EE2B162837EC27A63";

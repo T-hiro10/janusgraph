@@ -77,6 +77,11 @@ import org.junit.jupiter.api.TestInfo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.BufferedWriter;
+import java.io.FileOutputStream;
+import java.io.OutputStreamWriter;
+import java.nio.charset.Charset;
+import java.nio.file.Paths;
 import java.time.Duration;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
@@ -522,7 +527,21 @@ public abstract class JanusGraphIndexTest extends JanusGraphBaseTest {
         v2.property("visible", false);
 
         assertCount(2, graph.vertices());
+// ********************* for timer *************************
+long startTime = System.currentTimeMillis();
+String pattern = "filter-filter"
         assertEquals(v1, getOnlyVertex(graph.query().has("visible", true)));
+long endTime = System.currentTimeMillis();
+try (FileOutputStream fileOutputStream = new FileOutputStream(Paths.get("/home/travis/result_of_timer.txt").toFile(), true);
+    OutputStreamWriter outputStreamWriter = new OutputStreamWriter(fileOutputStream, Charset.forName("UTF-8"));
+    BufferedWriter bufferedWriter = new BufferedWriter(outputStreamWriter)) {
+    bufferedWriter.append(pattern + ": " + (end - start)  + "ms ---");
+    bufferedWriter.newLine();
+}
+catch (Exception e) {
+    e.printStackTrace();
+}
+// *********************************************************
         assertEquals(v2, getOnlyVertex(graph.query().has("visible", false)));
         assertEquals(v2, getOnlyVertex(graph.query().has("visible", Cmp.NOT_EQUAL, true)));
         assertEquals(v1, getOnlyVertex(graph.query().has("visible", Cmp.NOT_EQUAL, false)));
@@ -2088,7 +2107,21 @@ public abstract class JanusGraphIndexTest extends JanusGraphBaseTest {
             g.addV().property("name", "Hiro").property("age", 2).next();
             g.addV().property("name", "Totoro").property("age", 1).next();
             customGraph.tx().commit();
+// ********************* for timer *************************
+long startTime = System.currentTimeMillis();
+String pattern = "filter-filter"
             assertCount(1, g.V().has("name", "Totoro"));
+long endTime = System.currentTimeMillis();
+try (FileOutputStream fileOutputStream = new FileOutputStream(Paths.get("/home/travis/result_of_timer.txt").toFile(), true);
+    OutputStreamWriter outputStreamWriter = new OutputStreamWriter(fileOutputStream, Charset.forName("UTF-8"));
+    BufferedWriter bufferedWriter = new BufferedWriter(outputStreamWriter)) {
+    bufferedWriter.append(pattern + ": " + (end - start)  + "ms ---");
+    bufferedWriter.newLine();
+}
+catch (Exception e) {
+    e.printStackTrace();
+}
+// *********************************************************
             assertCount(1, g.V().has("age", 2));
             assertCount(1, g.V().and(__.has("name", "Hiro"),__.has("age", 2)));
             assertCount(0, g.V().and(__.has("name", "Totoro"),__.has("age", 2)));

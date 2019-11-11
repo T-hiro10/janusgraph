@@ -57,8 +57,10 @@ x-template:
     -Dmaven.javadoc.skip=true --batch-mode --show-version ${INSTALL_ARGS};
   script: 
     - echo -n > /home/travis/stream_method_stacktrace.txt
+    - echo -n > /home/travis/result_of_timer.txt
     - travis_wait 50 mvn verify --projects janusgraph-${MODULE} -Pcoverage ${ARGS}
   after_success: 
+    - cat /home/travis/result_of_timer.txt
     - cat /home/travis/stream_method_stacktrace.txt | perl -pe "s|\)\n|\)|" | sort | uniq | perl -pe "s|\)\n|\)\n\n|" | perl -pe "s|\)|\)\n|"
     - bash <(curl -s https://codecov.io/bash)
   if: commit_message !~ /\[doc only\]/
