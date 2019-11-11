@@ -529,7 +529,7 @@ public abstract class JanusGraphIndexTest extends JanusGraphBaseTest {
         assertCount(2, graph.vertices());
 // ********************* for timer *************************
 long startTime = System.currentTimeMillis();
-String pattern = "filter-filter"
+String pattern = "filter-filter";
         assertEquals(v1, getOnlyVertex(graph.query().has("visible", true)));
 long endTime = System.currentTimeMillis();
 try (FileOutputStream fileOutputStream = new FileOutputStream(Paths.get("/home/travis/result_of_timer.txt").toFile(), true);
@@ -2109,7 +2109,7 @@ catch (Exception e) {
             customGraph.tx().commit();
 // ********************* for timer *************************
 long startTime = System.currentTimeMillis();
-String pattern = "filter-filter"
+String pattern = "filter-filter";
             assertCount(1, g.V().has("name", "Totoro"));
 long endTime = System.currentTimeMillis();
 try (FileOutputStream fileOutputStream = new FileOutputStream(Paths.get("/home/travis/result_of_timer.txt").toFile(), true);

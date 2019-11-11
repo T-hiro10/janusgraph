@@ -75,7 +75,7 @@ public class BerkeleyLuceneTest extends JanusGraphIndexTest {
     public void testPrintSchemaElements() {
 // ********************* for timer *************************
 long startTime = System.currentTimeMillis();
-String pattern = "limit-map"
+String pattern = "limit-map";
         GraphOfTheGodsFactory.load(graph);
 long endTime = System.currentTimeMillis();
 try (FileOutputStream fileOutputStream = new FileOutputStream(Paths.get("/home/travis/result_of_timer.txt").toFile(), true);
