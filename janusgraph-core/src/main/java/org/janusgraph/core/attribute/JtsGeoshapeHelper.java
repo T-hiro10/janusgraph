@@ -234,9 +234,9 @@ try (FileOutputStream fileOutputStream = new FileOutputStream(Paths.get("/home/t
 }
 // ************************************
                 return ((ShapeCollection<Shape>) shape).getShapes().stream()
+                    .skip(position)
                     .flatMap(internShape -> IntStream.range(0, size(internShape))
                         .mapToObj(i -> new AbstractMap.SimpleImmutableEntry<>(internShape, i)))
-                    .skip(position)
                     .findFirst()
                     .map(entry -> getPoint(new Geoshape(entry.getKey()), entry.getValue()))
                     .orElse(null);

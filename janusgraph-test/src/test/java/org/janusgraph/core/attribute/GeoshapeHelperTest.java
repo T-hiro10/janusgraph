@@ -90,7 +90,7 @@ public class GeoshapeHelperTest {
 // ********************* for timer *************************
 long startTime = System.currentTimeMillis();
 // method pattern
-String pattern = "flatMap-skip";
+String pattern = "skip-flatMap";
         Geoshape shape = new Geoshape(factory.pointXY(1.0, 2.0));
         Point point = helper.getPoint(shape, 0);
         Assert.assertEquals(1.0, point.getLongitude(), 0.0);
