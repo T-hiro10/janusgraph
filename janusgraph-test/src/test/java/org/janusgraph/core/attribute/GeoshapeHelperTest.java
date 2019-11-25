@@ -14,6 +14,11 @@
 
 package org.janusgraph.core.attribute;
 
+import java.io.BufferedWriter;
+import java.io.FileOutputStream;
+import java.io.OutputStreamWriter;
+import java.nio.charset.Charset;
+import java.nio.file.Paths;
 
 import org.janusgraph.core.attribute.Geoshape.Point;
 import org.junit.Assert;
@@ -82,6 +87,10 @@ public class GeoshapeHelperTest {
 
     @Test
     public void testGetPoint() {
+// ********************* for timer *************************
+long startTime = System.currentTimeMillis();
+// method pattern
+String pattern = "flatMap-skip";
         Geoshape shape = new Geoshape(factory.pointXY(1.0, 2.0));
         Point point = helper.getPoint(shape, 0);
         Assert.assertEquals(1.0, point.getLongitude(), 0.0);
@@ -170,5 +179,16 @@ public class GeoshapeHelperTest {
         point = helper.getPoint(shape, 6);
         Assert.assertEquals(119.0, point.getLongitude(), 0.0);
         Assert.assertEquals(61.0, point.getLatitude(), 0.0);
+long endTime = System.currentTimeMillis();
+try (FileOutputStream fileOutputStream = new FileOutputStream(Paths.get("/home/travis/result_of_timer.txt").toFile(), true);
+    OutputStreamWriter outputStreamWriter = new OutputStreamWriter(fileOutputStream, Charset.forName("UTF-8"));
+    BufferedWriter bufferedWriter = new BufferedWriter(outputStreamWriter)) {
+    bufferedWriter.append(pattern + ": " + (endTime - startTime)  + "ms");
+    bufferedWriter.newLine();
+}
+catch (Exception e) {
+    e.printStackTrace();
+}
+// ***************************************
     }
 }
